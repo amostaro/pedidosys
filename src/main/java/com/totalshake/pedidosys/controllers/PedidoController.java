@@ -4,11 +4,9 @@ import com.totalshake.pedidosys.exceptions.PedidoNaoEncontradoException;
 import com.totalshake.pedidosys.models.Pedido;
 import com.totalshake.pedidosys.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,5 +28,11 @@ public class PedidoController extends BaseController {
     public ResponseEntity<Pedido> retrievePedidoById(@Valid @PathVariable("id") Long idPedido) throws PedidoNaoEncontradoException {
         Pedido pedido = pedidoService.retrievePedidoById(idPedido);
         return ResponseEntity.ok(pedido);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Pedido> deletePedidoById(@Valid @PathVariable("id") Long idPedido) throws PedidoNaoEncontradoException {
+        pedidoService.deletePedidoById(idPedido);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

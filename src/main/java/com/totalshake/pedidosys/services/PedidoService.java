@@ -31,4 +31,10 @@ public class PedidoService extends BaseService {
         return pedido;
 
     }
+
+    public void deletePedidoById(Long idPedido) throws PedidoNaoEncontradoException{
+
+        this.retrievePedidoById(idPedido);
+        pedidoRepository.deleteById(idPedido);
+    }
 }
