@@ -1,5 +1,6 @@
 package com.totalshake.pedidosys.controllers;
 
+import com.totalshake.pedidosys.DTO.PedidoDTO;
 import com.totalshake.pedidosys.exceptions.PedidoNaoEncontradoException;
 import com.totalshake.pedidosys.models.Pedido;
 import com.totalshake.pedidosys.services.PedidoService;
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -34,5 +37,13 @@ public class PedidoController extends BaseController {
     public ResponseEntity<Pedido> deletePedidoById(@Valid @PathVariable("id") Long idPedido) throws PedidoNaoEncontradoException {
         pedidoService.deletePedidoById(idPedido);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Pedido> createPedido(@Valid @RequestBody PedidoDTO pedidoDTO) throws Exception {
+        Pedido novoPedido = pedidoService.createPedido(pedidoDTO);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoPedido.getId()).toUri();
+        return ResponseEntity.created(location).body(novoPedido);
     }
 }
