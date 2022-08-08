@@ -18,6 +18,9 @@ public class PedidoService extends BaseService {
     PedidoRepository pedidoRepository;
     public List<Pedido> retrieveAllPedidos() {
         List<Pedido> pedidosList = this.pedidoRepository.findAll();
+        pedidosList.stream()
+                .map(ped -> (super.convertToDTO(ped, PedidoDTO.class)))
+                .toList();
         return pedidosList;
     }
 
@@ -45,7 +48,7 @@ public class PedidoService extends BaseService {
 
         try {
             pedidoDTO.setDataHoraPedido(LocalDateTime.now());
-            pedidoDTO.setStatusPedido(EnumStatus.REALIZADO.getCodigo());
+            pedidoDTO.setStatusPedido(EnumStatus.REALIZADO);
 
             return this.pedidoRepository.save(super.convertToModel(pedidoDTO, Pedido.class));
         } catch(Exception e) {
