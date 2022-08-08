@@ -1,8 +1,11 @@
 package com.totalshake.pedidosys.controllers;
 
 import com.totalshake.pedidosys.DTO.ItemPedidoDTO;
+import com.totalshake.pedidosys.DTO.PedidoDTO;
 import com.totalshake.pedidosys.exceptions.ItensPedidoNaoEncontradoException;
+import com.totalshake.pedidosys.exceptions.PedidoNaoEncontradoException;
 import com.totalshake.pedidosys.models.ItemPedido;
+import com.totalshake.pedidosys.models.Pedido;
 import com.totalshake.pedidosys.services.ItemPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,5 +48,11 @@ public class ItemPedidoController extends BaseController {
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoItemPedido.getId()).toUri();
         return ResponseEntity.created(location).body(novoItemPedido);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ItemPedido> updateItensPedido(@Valid @RequestBody ItemPedidoDTO itemPedidoDTO) throws ItensPedidoNaoEncontradoException {
+        ItemPedido itemPedido = itemPedidoService.updateItensPedido(itemPedidoDTO);
+        return ResponseEntity.ok(itemPedido);
     }
 }

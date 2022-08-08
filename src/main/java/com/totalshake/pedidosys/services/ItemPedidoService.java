@@ -61,10 +61,6 @@ public class ItemPedidoService extends BaseService {
                 () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
         );
 
-//        if (pedido == null || ObjectUtils.isEmpty(pedido)) {
-//            throw new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.");
-//        }
-
         itemPedidoDTO.setId(null);
         itemPedidoDTO.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
         itemPedidoDTO.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
@@ -72,9 +68,29 @@ public class ItemPedidoService extends BaseService {
         ItemPedido itemPedido = super.convertToModel(itemPedidoDTO, ItemPedido.class);
         itemPedido.setPedido(pedido);
 
-
-
         this.itemPedidoRepository.save(itemPedido);
         return itemPedido;
+    }
+
+    public ItemPedido updateItensPedido(ItemPedidoDTO itemPedidoDTO) {
+
+        ItemPedido itemPedidoUpdate = null;
+        if (!ObjectUtils.isEmpty(itemPedidoDTO)) {
+            itemPedidoUpdate = this.retrieveItensPedidoById(itemPedidoDTO.getId());
+            itemPedidoUpdate.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
+            itemPedidoUpdate.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
+
+//            Long idPedido = itemPedidoDTO.getPedidoDTO().getId();
+//            Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
+//                    () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
+//            );
+//
+//            itemPedidoUpdate.setPedido(pedido);
+
+        } else {
+            throw new ItensPedidoNaoEncontradoException("Item Pedido: " + itemPedidoDTO.getId()+ " não encontrado.");
+        }
+
+        return itemPedidoRepository.save(itemPedidoUpdate);
     }
 }

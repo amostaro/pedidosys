@@ -46,4 +46,10 @@ public class PedidoController extends BaseController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoPedido.getId()).toUri();
         return ResponseEntity.created(location).body(novoPedido);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Pedido> updatePedido(@Valid @RequestBody PedidoDTO pedidoDTO) throws PedidoNaoEncontradoException {
+        Pedido pedido = pedidoService.updatePedido(pedidoDTO);
+        return ResponseEntity.ok(pedido);
+    }
 }

@@ -5,6 +5,7 @@ import com.totalshake.pedidosys.enums.EnumStatus;
 import com.totalshake.pedidosys.exceptions.PedidoNaoEncontradoException;
 import com.totalshake.pedidosys.models.Pedido;
 import com.totalshake.pedidosys.repositories.PedidoRepository;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,18 @@ public class PedidoService extends BaseService {
         } catch(Exception e) {
             throw new Exception();
         }
+    }
+
+    public Pedido updatePedido(PedidoDTO pedidoDTO) {
+
+        Pedido pedido = null;
+        if (!ObjectUtils.isEmpty(pedidoDTO)) {
+            pedido = this.retrievePedidoById(pedidoDTO.getId());
+            pedido.setStatusPedido(pedidoDTO.getStatusPedido());
+        } else {
+            throw new PedidoNaoEncontradoException("Pedido: "+pedidoDTO.getId() + " não encontrado.");
+        }
+
+        return pedidoRepository.save(pedido);
     }
 }
