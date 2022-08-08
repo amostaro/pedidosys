@@ -1,9 +1,6 @@
 package com.totalshake.pedidosys.enums;
 
 import lombok.Getter;
-import org.springframework.util.StringUtils;
-
-import java.util.Arrays;
 
 public enum EnumStatus {
 
@@ -27,13 +24,4 @@ public enum EnumStatus {
         this.descricao = descricao;
     }
 
-    public static EnumStatus valueOfCodigo(String codigo) {
-        if (StringUtils.isEmpty(codigo)) {
-            return null;
-        }
-        return Arrays.stream(EnumStatus.values())
-                .filter(element -> element.getCodigo().equalsIgnoreCase(codigo))
-                .findAny()
-                .orElse(null);
-    }
 }

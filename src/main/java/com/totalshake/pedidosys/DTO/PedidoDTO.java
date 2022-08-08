@@ -1,6 +1,5 @@
 package com.totalshake.pedidosys.DTO;
 
-import com.totalshake.pedidosys.enums.EnumStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,6 @@ public class PedidoDTO {
 
     private Long id;
     private LocalDateTime dataHoraPedido;
-    private EnumStatus statusPedido;
+    private String statusPedido;
     private List<ItemPedidoDTO> itensPedidoListDTO;
 }

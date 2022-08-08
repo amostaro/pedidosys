@@ -23,8 +23,8 @@ public class ItemPedidoController extends BaseController {
 
     @GetMapping("/retrieve-all")
     public ResponseEntity<List<ItemPedido>> retrieveAllItensPedido() {
-        List<ItemPedido> itensPedidosList = itemPedidoService.retrieveAllItensPedido();
-        return ResponseEntity.ok(itensPedidosList);
+        List<ItemPedido> itensPedidoList = itemPedidoService.retrieveAllItensPedido();
+        return ResponseEntity.ok(itensPedidoList);
     }
 
     @GetMapping("/retrieve/{id}")

@@ -1,5 +1,6 @@
 package com.totalshake.pedidosys.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.totalshake.pedidosys.commons.BaseEntity;
 import com.totalshake.pedidosys.enums.EnumStatus;
 import lombok.AllArgsConstructor;
@@ -27,9 +28,11 @@ public class Pedido extends BaseEntity {
     @Column(name = "data_hora_pedido")
     private LocalDateTime dataHoraPedido;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_pedido")
     private EnumStatus statusPedido;
 
-    @OneToMany(mappedBy="pedido")
+    @JsonIgnore
+    @OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itensPedidoList;
 }

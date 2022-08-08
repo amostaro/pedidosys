@@ -17,7 +17,7 @@ public class PedidoService extends BaseService {
     @Autowired
     PedidoRepository pedidoRepository;
     public List<Pedido> retrieveAllPedidos() {
-        List<Pedido> pedidosList = pedidoRepository.findAll();
+        List<Pedido> pedidosList = this.pedidoRepository.findAll();
         return pedidosList;
     }
 
@@ -25,7 +25,7 @@ public class PedidoService extends BaseService {
 
         Pedido pedido = null;
         try {
-            pedido = pedidoRepository.findById(idPedido).orElseThrow(
+            pedido = this.pedidoRepository.findById(idPedido).orElseThrow(
                     () -> new PedidoNaoEncontradoException("Pedido: "+idPedido+" não encontrado.")
             );
         } catch (Exception e) {
@@ -38,16 +38,16 @@ public class PedidoService extends BaseService {
     public void deletePedidoById(Long idPedido) throws PedidoNaoEncontradoException{
 
         this.retrievePedidoById(idPedido);
-        pedidoRepository.deleteById(idPedido);
+        this.pedidoRepository.deleteById(idPedido);
     }
 
     public Pedido createPedido(PedidoDTO pedidoDTO) throws Exception {
 
         try {
             pedidoDTO.setDataHoraPedido(LocalDateTime.now());
-            pedidoDTO.setStatusPedido(EnumStatus.REALIZADO);
+            pedidoDTO.setStatusPedido(EnumStatus.REALIZADO.getCodigo());
 
-            return pedidoRepository.save(super.convertToModel(pedidoDTO, Pedido.class));
+            return this.pedidoRepository.save(super.convertToModel(pedidoDTO, Pedido.class));
         } catch(Exception e) {
             throw new Exception();
         }
