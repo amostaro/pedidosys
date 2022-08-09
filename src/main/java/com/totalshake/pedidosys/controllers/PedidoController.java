@@ -52,4 +52,9 @@ public class PedidoController extends BaseController {
         Pedido pedido = pedidoService.updatePedido(pedidoDTO);
         return ResponseEntity.ok(pedido);
     }
+
+    @PutMapping("/receber/pagamento/pedido/{id}")
+    public void receberPagamentoPedidoById(@Valid @PathVariable("id") Long idPedido) {
+        this.pedidoService.receberPagamentoPedidoById(idPedido);
+    }
 }
