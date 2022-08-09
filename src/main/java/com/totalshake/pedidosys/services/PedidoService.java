@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -63,10 +64,29 @@ public class PedidoService extends BaseService {
         if (!ObjectUtils.isEmpty(pedidoDTO)) {
             pedido = this.retrievePedidoById(pedidoDTO.getId());
             pedido.setStatusPedido(pedidoDTO.getStatusPedido());
+            pedido.setAtualizadoEm(new Date());
         } else {
             throw new PedidoNaoEncontradoException("Pedido: "+pedidoDTO.getId() + " não encontrado.");
         }
 
         return pedidoRepository.save(pedido);
+    }
+
+    public void makePagamentoByPedidoId(Long idPedido) throws PedidoNaoEncontradoException {
+
+        Pedido pedido = null;
+        try {
+            pedido = this.pedidoRepository.findById(idPedido).orElseThrow(
+                    () -> new PedidoNaoEncontradoException("Pedido: "+idPedido+" não encontrado.")
+            );
+
+            pedido.setStatusPedido(EnumStatus.PAGO);
+            pedido.setAtualizadoEm(new Date());
+
+            pedidoRepository.save(pedido);
+
+        } catch (Exception e) {
+            throw new PedidoNaoEncontradoException("Pedido: "+idPedido+" não encontrado.");
+        }
     }
 }

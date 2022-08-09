@@ -1,6 +1,7 @@
 package com.totalshake.pedidosys.controllers;
 
 import com.totalshake.pedidosys.DTO.PedidoDTO;
+import com.totalshake.pedidosys.enums.EnumStatus;
 import com.totalshake.pedidosys.exceptions.PedidoNaoEncontradoException;
 import com.totalshake.pedidosys.models.Pedido;
 import com.totalshake.pedidosys.services.PedidoService;
@@ -52,4 +53,11 @@ public class PedidoController extends BaseController {
         Pedido pedido = pedidoService.updatePedido(pedidoDTO);
         return ResponseEntity.ok(pedido);
     }
+
+    @PostMapping("/makePagamentoByPedidoId/{id}")
+    public ResponseEntity<Pedido> makePagamentoByPedidoId(@Valid @PathVariable("id") Long idPedido) throws PedidoNaoEncontradoException {
+        this.pedidoService.makePagamentoByPedidoId(idPedido);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
