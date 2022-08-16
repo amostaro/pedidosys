@@ -84,4 +84,10 @@ public class PedidoService extends BaseService {
 
         this.pedidoRepository.save(pedido);
     }
+
+    public String retornarStatusPedidoById(Long idPedido) {
+
+        Pedido pedido = this.retrievePedidoById(idPedido);
+        return pedido.getStatusPedido().getCodigo();
+    }
 }

@@ -57,4 +57,10 @@ public class PedidoController extends BaseController {
     public void receberPagamentoPedidoById(@Valid @PathVariable("id") Long idPedido) {
         this.pedidoService.receberPagamentoPedidoById(idPedido);
     }
+
+    @GetMapping("/buscar/status/pedido/{id}")
+    public String retornarStatusPedidoById(@Valid @PathVariable("id") Long idPedido) {
+        String statusPedido = this.pedidoService.retornarStatusPedidoById(idPedido);
+        return statusPedido;
+    }
 }
