@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class PedidoService extends BaseService {
         try {
             pedidoDTO.setDataHoraPedido(LocalDateTime.now());
             pedidoDTO.setStatusPedido(EnumStatus.REALIZADO);
+            pedidoDTO.setItensPedidoListDTO(new ArrayList<>());
 
             return this.pedidoRepository.save(super.convertToModel(pedidoDTO, Pedido.class));
         } catch(Exception e) {

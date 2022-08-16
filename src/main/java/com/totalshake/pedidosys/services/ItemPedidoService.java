@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -52,29 +53,7 @@ public class ItemPedidoService extends BaseService {
         this.itemPedidoRepository.deleteById(idItemPedido);
     }
 
-    public ItemPedido createItemPedido(ItemPedidoDTO itemPedidoDTO) throws PedidoNaoEncontradoException {
-
-        if (ObjectUtils.isEmpty(itemPedidoDTO)) {
-            throw new ItensPedidoNaoEncontradoException("Operação inválida! Item Pedido não pode ser vazio.");
-        }
-
-        Long idPedido = itemPedidoDTO.getPedidoDTO().getId();
-        Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
-                () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
-        );
-
-        itemPedidoDTO.setId(null);
-        itemPedidoDTO.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
-        itemPedidoDTO.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
-
-        ItemPedido itemPedido = super.convertToModel(itemPedidoDTO, ItemPedido.class);
-        itemPedido.setPedido(pedido);
-
-        this.itemPedidoRepository.save(itemPedido);
-        return itemPedido;
-    }
-
-//    public List<ItemPedido> createItemPedido(ItemPedidoDTO itemPedidoDTO) throws PedidoNaoEncontradoException {
+//    public ItemPedido createItemPedido(ItemPedidoDTO itemPedidoDTO) throws PedidoNaoEncontradoException {
 //
 //        if (ObjectUtils.isEmpty(itemPedidoDTO)) {
 //            throw new ItensPedidoNaoEncontradoException("Operação inválida! Item Pedido não pode ser vazio.");
@@ -85,20 +64,41 @@ public class ItemPedidoService extends BaseService {
 //                () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
 //        );
 //
-//        List<ItemPedidoDTO> itemPedidoListDTO = new ArrayList<>();
-//        for (ItemPedidoDTO itemDTO : itemPedidoListDTO) {
+//        itemPedidoDTO.setId(null);
+//        itemPedidoDTO.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
+//        itemPedidoDTO.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
 //
-//            itemDTO.setId(null);
-//            itemDTO.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
-//            itemDTO.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
+//        ItemPedido itemPedido = super.convertToModel(itemPedidoDTO, ItemPedido.class);
+//        itemPedido.setPedido(pedido);
 //
-//            ItemPedido itemPedido = super.convertToModel(itemDTO, ItemPedido.class);
-//            itemPedido.setPedido(pedido);
-//            this.itemPedidoRepository.save(itemPedido);
-//        }
-//
-//        return Collections.singletonList(super.convertTo(itemPedidoListDTO, ItemPedido.class));
+//        this.itemPedidoRepository.save(itemPedido);
+//        return itemPedido;
 //    }
+
+    public List<ItemPedido> createItemPedido(List<ItemPedidoDTO> itemPedidoListDTO) throws PedidoNaoEncontradoException {
+
+        if (ObjectUtils.isEmpty(itemPedidoListDTO)) {
+            throw new ItensPedidoNaoEncontradoException("Operação inválida! Item Pedido não pode ser vazio.");
+        }
+
+        for (ItemPedidoDTO itemPedidoDTO : itemPedidoListDTO) {
+            Long idPedido = itemPedidoDTO.getPedidoDTO().getId();
+            Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
+                    () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
+            );
+
+            itemPedidoDTO.setId(null);
+            itemPedidoDTO.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
+            itemPedidoDTO.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
+
+            ItemPedido itemPedido = super.convertToModel(itemPedidoDTO, ItemPedido.class);
+            itemPedido.setPedido(pedido);
+            this.itemPedidoRepository.save(itemPedido);
+
+        }
+
+        return Collections.singletonList(super.convertTo(itemPedidoListDTO, ItemPedido.class));
+    }
 
     public ItemPedido updateItensPedido(ItemPedidoDTO itemPedidoDTO) {
 

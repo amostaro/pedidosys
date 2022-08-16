@@ -27,7 +27,7 @@ public class ItemPedido extends BaseEntity {
     @Column(name = "descricao_pedido")
     private String descricaoPedido;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "fk_pedido_id")
     private Pedido pedido;
 }

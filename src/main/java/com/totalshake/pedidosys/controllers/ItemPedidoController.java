@@ -39,21 +39,21 @@ public class ItemPedidoController extends BaseController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ItemPedido> createItemPedido(@Valid @RequestBody ItemPedidoDTO itemPedidoDTO) throws Exception {
-        ItemPedido novoItemPedido = itemPedidoService.createItemPedido(itemPedidoDTO);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoItemPedido.getId()).toUri();
-        return ResponseEntity.created(location).body(novoItemPedido);
-    }
-
 //    @PostMapping("/create")
-//    public ResponseEntity<List<ItemPedido>> createItemPedido(@Valid @RequestBody ItemPedidoDTO itemPedidoDTO) throws Exception {
-//        List<ItemPedido> novoItemPedidoList = itemPedidoService.createItemPedido(itemPedidoDTO);
+//    public ResponseEntity<ItemPedido> createItemPedido(@Valid @RequestBody ItemPedidoDTO itemPedidoDTO) throws Exception {
+//        ItemPedido novoItemPedido = itemPedidoService.createItemPedido(itemPedidoDTO);
 //
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoItemPedidoList).toUri();
-//        return ResponseEntity.created(location).body(novoItemPedidoList);
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoItemPedido.getId()).toUri();
+//        return ResponseEntity.created(location).body(novoItemPedido);
 //    }
+
+    @PostMapping("/create")
+    public ResponseEntity<List<ItemPedido>> createItemPedido(@Valid @RequestBody List<ItemPedidoDTO> itemPedidoListDTO) throws Exception {
+        List<ItemPedido> novoItemPedidoList = itemPedidoService.createItemPedido(itemPedidoListDTO);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoItemPedidoList).toUri();
+        return ResponseEntity.created(location).body(novoItemPedidoList);
+    }
 
     @PutMapping("/update")
     public ResponseEntity<ItemPedido> updateItensPedido(@Valid @RequestBody ItemPedidoDTO itemPedidoDTO) throws ItensPedidoNaoEncontradoException {
