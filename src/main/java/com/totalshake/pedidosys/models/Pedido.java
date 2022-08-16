@@ -1,6 +1,6 @@
 package com.totalshake.pedidosys.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.totalshake.pedidosys.commons.BaseEntity;
 import com.totalshake.pedidosys.enums.EnumStatus;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class Pedido extends BaseEntity {
     @Column(name = "status_pedido")
     private EnumStatus statusPedido;
 
-    @JsonIgnore
+    @JsonBackReference
     @OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itensPedidoList;
 }

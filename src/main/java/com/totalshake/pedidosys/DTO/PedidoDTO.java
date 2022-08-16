@@ -1,5 +1,6 @@
 package com.totalshake.pedidosys.DTO;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.totalshake.pedidosys.enums.EnumStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +24,6 @@ public class PedidoDTO {
     @Enumerated(EnumType.STRING)
     private EnumStatus statusPedido;
 
+    @JsonBackReference
     private List<ItemPedidoDTO> itensPedidoListDTO;
 }

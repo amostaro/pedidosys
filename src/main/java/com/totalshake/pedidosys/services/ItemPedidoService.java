@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -46,7 +47,8 @@ public class ItemPedidoService extends BaseService {
 
     public void deleteItensPedidoById(Long idItemPedido) throws ItensPedidoNaoEncontradoException {
 
-        this.retrieveItensPedidoById(idItemPedido);
+        ItemPedido itemPedido = this.retrieveItensPedidoById(idItemPedido);
+        itemPedido.setApagadoEm(new Date());
         this.itemPedidoRepository.deleteById(idItemPedido);
     }
 
@@ -72,6 +74,32 @@ public class ItemPedidoService extends BaseService {
         return itemPedido;
     }
 
+//    public List<ItemPedido> createItemPedido(ItemPedidoDTO itemPedidoDTO) throws PedidoNaoEncontradoException {
+//
+//        if (ObjectUtils.isEmpty(itemPedidoDTO)) {
+//            throw new ItensPedidoNaoEncontradoException("Operação inválida! Item Pedido não pode ser vazio.");
+//        }
+//
+//        Long idPedido = itemPedidoDTO.getPedidoDTO().getId();
+//        Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
+//                () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
+//        );
+//
+//        List<ItemPedidoDTO> itemPedidoListDTO = new ArrayList<>();
+//        for (ItemPedidoDTO itemDTO : itemPedidoListDTO) {
+//
+//            itemDTO.setId(null);
+//            itemDTO.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
+//            itemDTO.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
+//
+//            ItemPedido itemPedido = super.convertToModel(itemDTO, ItemPedido.class);
+//            itemPedido.setPedido(pedido);
+//            this.itemPedidoRepository.save(itemPedido);
+//        }
+//
+//        return Collections.singletonList(super.convertTo(itemPedidoListDTO, ItemPedido.class));
+//    }
+
     public ItemPedido updateItensPedido(ItemPedidoDTO itemPedidoDTO) {
 
         ItemPedido itemPedidoUpdate = null;
@@ -79,13 +107,7 @@ public class ItemPedidoService extends BaseService {
             itemPedidoUpdate = this.retrieveItensPedidoById(itemPedidoDTO.getId());
             itemPedidoUpdate.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
             itemPedidoUpdate.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
-
-//            Long idPedido = itemPedidoDTO.getPedidoDTO().getId();
-//            Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
-//                    () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
-//            );
-//
-//            itemPedidoUpdate.setPedido(pedido);
+            itemPedidoUpdate.setAtualizadoEm(new Date());
 
         } else {
             throw new ItensPedidoNaoEncontradoException("Item Pedido: " + itemPedidoDTO.getId()+ " não encontrado.");

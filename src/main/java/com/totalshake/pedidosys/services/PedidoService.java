@@ -42,7 +42,8 @@ public class PedidoService extends BaseService {
 
     public void deletePedidoById(Long idPedido) throws PedidoNaoEncontradoException{
 
-        this.retrievePedidoById(idPedido);
+        Pedido pedido = this.retrievePedidoById(idPedido);
+        pedido.setApagadoEm(new Date());
         this.pedidoRepository.deleteById(idPedido);
     }
 
@@ -64,6 +65,7 @@ public class PedidoService extends BaseService {
         if (!ObjectUtils.isEmpty(pedidoDTO)) {
             pedido = this.retrievePedidoById(pedidoDTO.getId());
             pedido.setStatusPedido(pedidoDTO.getStatusPedido());
+            pedido.setAtualizadoEm(new Date());
         } else {
             throw new PedidoNaoEncontradoException("Pedido: "+pedidoDTO.getId() + " não encontrado.");
         }
