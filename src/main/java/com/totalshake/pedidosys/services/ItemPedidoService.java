@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +82,9 @@ public class ItemPedidoService extends BaseService {
             throw new ItensPedidoNaoEncontradoException("Operação inválida! Item Pedido não pode ser vazio.");
         }
 
-        for (ItemPedidoDTO itemPedidoDTO : itemPedidoListDTO) {
+        List<ItemPedido> itemPedidoList = new ArrayList<>();
+
+        itemPedidoListDTO.forEach(itemPedidoDTO -> {
             Long idPedido = itemPedidoDTO.getPedidoDTO().getId();
             Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
                     () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
@@ -93,9 +96,28 @@ public class ItemPedidoService extends BaseService {
 
             ItemPedido itemPedido = super.convertToModel(itemPedidoDTO, ItemPedido.class);
             itemPedido.setPedido(pedido);
-            this.itemPedidoRepository.save(itemPedido);
 
-        }
+            itemPedidoList.add(itemPedido);
+
+        });
+
+        this.itemPedidoRepository.saveAll(itemPedidoList);
+
+//        for (ItemPedidoDTO itemPedidoDTO : itemPedidoListDTO) {
+//            Long idPedido = itemPedidoDTO.getPedidoDTO().getId();
+//            Pedido pedido = pedidoRepository.findById(idPedido).orElseThrow(
+//                    () -> new PedidoNaoEncontradoException("Operação inválida! Pedido não cadastrado.")
+//            );
+//
+//            itemPedidoDTO.setId(null);
+//            itemPedidoDTO.setQuantidadeItens(itemPedidoDTO.getQuantidadeItens());
+//            itemPedidoDTO.setDescricaoPedido(itemPedidoDTO.getDescricaoPedido());
+//
+//            ItemPedido itemPedido = super.convertToModel(itemPedidoDTO, ItemPedido.class);
+//            itemPedido.setPedido(pedido);
+//            this.itemPedidoRepository.save(itemPedido);
+//
+//        }
 
         return Collections.singletonList(super.convertTo(itemPedidoListDTO, ItemPedido.class));
     }
